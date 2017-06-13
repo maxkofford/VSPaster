@@ -1,0 +1,184 @@
+
+Splitter
+
+ 	/// <summary>
+        /// Handling the event(s).
+        /// </summary>
+        /// <param name="evt">The event that is being sent here.</param>
+        /// <returns>Whether the event was handled or not.</returns>
+        public ListenerResult HandleEvent(IEvent evt)
+        {
+            string evtName = evt.GetName();
+
+            switch (evtName)
+            {
+                case ThingHere.EventName:
+
+                    ThingHere.Data data = (ThingHere.Data)evt.GetData();
+
+                    MethodHere(data);
+
+                    return ListenerResult.Handled;
+            }
+
+            return ListenerResult.Ignored;
+        }
+
+        /// <summary>
+        /// Adds or removes the listener for the event(s).
+        /// </summary>
+        /// <param name="mode">Whether its adding or removing the event.</param>
+        public void Subscribe(SubscribeMode mode)
+        {        
+             EventManager.ManageSubscriber(mode, this, ThingHere.EventName);          
+        }
+     
+        /// <summary>
+        /// Adding the listener for the event(s).
+        /// </summary>
+        private void Awake()
+        {
+            Subscribe(SubscribeMode.Subscribe);
+        }
+
+        /// <summary>
+        /// Removing the listener for the event(s).
+        /// </summary>
+        private void OnDestroy()
+        {
+            Subscribe(SubscribeMode.Unsubscribe);
+        }
+
+Splitter
+if()
+{
+	int breaker = 1;
+}
+Splitter
+//Written by Max Kofford for StrataVR
+namespace Strata
+{
+Splitter
+
+ 	/// <summary>
+        /// 
+        /// </summary>
+        [Tooltip("")]
+        [SerializeField]
+        private 
+Splitter
+
+/// <summary>
+            /// The name for the event.
+            /// </summary>
+            public const string EventName = "NameHere";
+
+            /// <summary>
+            /// The data to be passed along with the event.
+            /// </summary>
+            private readonly Data data;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="NameHere" /> class.
+            /// </summary>
+            public NameHere()
+            {
+                data = new Data();
+            }
+
+            /// <summary>
+            /// Gets the name of the event.
+            /// </summary>
+            /// <returns>The name of the event.</returns>
+            string IEvent.GetName()
+            {
+                return EventName;
+            }
+
+            /// <summary>
+            /// Gets the data for this event call.
+            /// </summary>
+            /// <returns>The data for the event.</returns>
+            object IEvent.GetData()
+            {
+                return data;
+            }
+
+            /// <summary>
+            /// Represents the data to be passed along with the event.
+            /// </summary>
+            public class Data
+            {
+		/// <summary>
+                /// Initializes a new instance of the <see cref="Data" /> class.
+                /// </summary>
+                public Data()
+                {
+                   
+                }
+
+		/// <summary>
+                /// Gets or sets something.
+                /// </summary>
+                public GameObject something
+                {
+                    get;
+                    set;
+                }
+                
+		
+            }
+Splitter
+
+ /// <summary>
+        /// The guid for this selectable
+        /// </summary>
+        private SelectionManager.GUID? guid;
+
+        /// <summary>
+        /// Gets the unique guid for this selectable
+        /// </summary>
+        /// <returns>The guid</returns>
+        public SelectionManager.GUID GetGUID()
+        {
+            if (guid == null)
+            { 
+                guid = new SelectionManager.GUID(this);
+            }
+
+            return guid.Value;
+        }
+        
+        /// <summary>
+        /// Gets the host monobehavior for this selectable
+        /// </summary>
+        /// <returns>The host monobehavior</returns>
+        public MonoBehaviour GetMonoBehaviour()
+        {
+            return this;
+        }
+
+        /// <summary>
+        /// What to do when this selectable is deselected.
+        /// </summary>
+        public void OnDeselected()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// What to do when this selectable is selected.
+        /// </summary>
+        public void OnSelected()
+        {
+            throw new NotImplementedException();
+        }
+
+ 	/// <summary>
+        /// What to do when this selectable is destroyed
+        /// </summary>
+        public void OnDestroy()
+        {
+            EventManager.TriggerEvent(new EventSelectionPicked(new EventSelectionPicked.Data(this, SelectionManager.Mode.Remove)));
+        }
+       
